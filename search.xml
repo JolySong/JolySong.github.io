@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>C prime plus 7.1（rain.c）</title>
+    <url>/2020/11/17/C-prime-plus-7-1%EF%BC%88rain-c%EF%BC%89/</url>
+    <content><![CDATA[<h3 id="rain-c-–计算每年的总降水量，年平均降水量和五年中每月的平均降水量"><a href="#rain-c-–计算每年的总降水量，年平均降水量和五年中每月的平均降水量" class="headerlink" title=" rain.c –计算每年的总降水量，年平均降水量和五年中每月的平均降水量 "></a><span style="color:#e53cd;"> rain.c –计算每年的总降水量，年平均降水量和五年中每月的平均降水量 </span></h3><h3 id="Code-如下："><a href="#Code-如下：" class="headerlink" title="Code 如下： "></a><span style="color:#e53ecb;">Code 如下：</span> <br></h3><a id="more"></a>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#include&lt;stdio.h&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#define MONTHS 12</span></span><br><span class="line"><span class="comment">#define YEARS 5</span></span><br><span class="line"></span><br><span class="line">int main(void)</span><br><span class="line">&#123;</span><br><span class="line">    // 用2010～2014年的降水量初始化数组</span><br><span class="line">    const <span class="built_in">float</span> rain[YEARS][MONTHS] =</span><br><span class="line">    &#123;</span><br><span class="line">        &#123; 4.3, 4.3, 4.3, 3.0, 2.0, 1.2, 0.2, 0.2, 0.4, 2.4, 3.5, 6.6 &#125;,</span><br><span class="line">        &#123; 8.5, 8.2, 1.2, 1.6, 2.4, 0.0, 5.2, 0.9, 0.3, 0.9, 1.4, 7.3 &#125;,</span><br><span class="line">        &#123; 9.1, 8.5, 6.7, 4.3, 2.1, 0.8, 0.2, 0.2, 1.1, 2.3, 6.1, 8.4 &#125;,</span><br><span class="line">        &#123; 7.2, 9.9, 8.4, 3.3, 1.2, 0.8, 0.4, 0.0, 0.6, 1.7, 4.3, 6.2 &#125;,</span><br><span class="line">        &#123; 7.6, 5.6, 3.8, 2.8, 3.8, 0.2, 0.0, 0.0, 0.0, 1.3, 2.6, 5.2 &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    // 数组版本</span><br><span class="line">    int year, month;</span><br><span class="line">    <span class="built_in">float</span> subtot, total;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot; YEAR   RAINFALL  (inchs)\n&quot;</span>);</span><br><span class="line">    <span class="keyword">for</span>(year = 0,total = 0; year&lt; YEARS;year++)</span><br><span class="line">    &#123;                       //  每一年，各月的降水量总和</span><br><span class="line">        <span class="keyword">for</span>(month = 0,subtot = 0; month &lt; MONTHS;month++)</span><br><span class="line">            subtot += rain[year][month];</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%5d %15.1f\n&quot;</span>,2010+year,subtot);</span><br><span class="line">        total += subtot;    //  五年的总降水量</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\nThe yearly average is %.1f inches.\n\n&quot;</span>,total/YEARS);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;MONTHLY AVERAGES:\n\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;  Jan  Feb  Mar  Apr  May  Jun  Jul  Aug  Sep  Qct &quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot; Nov  Dec\n&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (month = 0; month&lt;MONTHS; month++)</span><br><span class="line">    &#123;                      //  每个月，五年的总降水量</span><br><span class="line">        <span class="keyword">for</span> (year = 0,subtot = 0; year&lt;YEARS; year++) </span><br><span class="line">            subtot += rain[year][month];</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%5.1f&quot;</span>,subtot/YEARS);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 指针版本 1</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">float</span> subtot, total;</span><br><span class="line">    int year,month;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">float</span> (*pz)[MONTHS];</span><br><span class="line">    pz = rain;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot; YEAR   RAINFALL  (inchs)\n&quot;</span>);</span><br><span class="line">    <span class="keyword">for</span>(year = 0,total = 0; year&lt; YEARS;year++)</span><br><span class="line">    &#123;                       //  每一年，各月的降水量总和</span><br><span class="line">        <span class="keyword">for</span>(month = 0,subtot = 0; month &lt; MONTHS;month++)</span><br><span class="line">            subtot += *(*(pz+year)+month);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%5d %15.1f\n&quot;</span>,2010+year,subtot);</span><br><span class="line">        total += subtot;    //  五年的总降水量</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\nThe yearly average is %.1f inches.\n\n&quot;</span>,total/YEARS);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;MONTHLY AVERAGES:\n\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;  Jan  Feb  Mar  Apr  May  Jun  Jul  Aug  Sep  Qct &quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot; Nov  Dec\n&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (month = 0; month&lt;MONTHS; month++)</span><br><span class="line">    &#123;                      //  每个月，五年的总降水量</span><br><span class="line">        <span class="keyword">for</span> (year = 0,subtot = 0; year&lt;YEARS; year++) </span><br><span class="line">            subtot += *(*(pz+year)+month);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%5.1f&quot;</span>,subtot/YEARS);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 指针版本二 </span><br><span class="line">    </span><br><span class="line">    <span class="built_in">float</span> subtot, total;</span><br><span class="line">    int year,month;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot; YEAR   RAINFALL  (inchs)\n&quot;</span>);</span><br><span class="line">    <span class="keyword">for</span>(year = 0,total = 0; year&lt; YEARS;year++)</span><br><span class="line">    &#123;                       //  每一年，各月的降水量总和</span><br><span class="line">        <span class="keyword">for</span>(month = 0,subtot = 0; month &lt; MONTHS;month++)</span><br><span class="line">            subtot += *(*(rain+year)+month);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%5d %15.1f\n&quot;</span>,2010+year,subtot);</span><br><span class="line">        total += subtot;    //  五年的总降水量</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\nThe yearly average is %.1f inches.\n\n&quot;</span>,total/YEARS);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;MONTHLY AVERAGES:\n\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;  Jan  Feb  Mar  Apr  May  Jun  Jul  Aug  Sep  Qct &quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot; Nov  Dec\n&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (month = 0; month&lt;MONTHS; month++)</span><br><span class="line">    &#123;                      //  每个月，五年的总降水量</span><br><span class="line">        <span class="keyword">for</span> (year = 0,subtot = 0; year&lt;YEARS; year++) </span><br><span class="line">            subtot += *(*(rain+year)+month);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%5.1f&quot;</span>,subtot/YEARS);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="学习记录，随时可能更改：如你有更好的建议请联系我"><a href="#学习记录，随时可能更改：如你有更好的建议请联系我" class="headerlink" title="学习记录，随时可能更改：如你有更好的建议请联系我"></a><span style="color:#e53ecb;">学习记录，随时可能更改</span>：<a href="mailto:854236339@qq.com">如你有更好的建议请联系我</a></h4>]]></content>
+      <categories>
+        <category>Learn</category>
+      </categories>
+      <tags>
+        <tag>code</tag>
+        <tag>C</tag>
+        <tag>C primer plus</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PAT 小于m的最大的10个素数</title>
+    <url>/2020/11/17/PAT-%E5%B0%8F%E4%BA%8Em%E7%9A%84%E6%9C%80%E5%A4%A7%E7%9A%8410%E4%B8%AA%E7%B4%A0%E6%95%B0/</url>
+    <content><![CDATA[<h3 id="给定一个整数m（50-lt-m-lt-20000），找出小于m的最大的10个素数。"><a href="#给定一个整数m（50-lt-m-lt-20000），找出小于m的最大的10个素数。" class="headerlink" title="给定一个整数m（50&lt;m&lt;20000），找出小于m的最大的10个素数。"></a>给定一个整数m（50&lt;m&lt;20000），找出小于m的最大的10个素数。</h3><a id="more"></a>
+
+<h4 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式:"></a>输入格式:</h4><p>输入在一行中给出一个正整数m（50 &lt; m &lt; 20000）</p>
+<h4 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式:"></a>输出格式:</h4><p>在一行中按递减顺序输出10个满足条件的素数，每个素数输出占6列。没有其它任何附加格式和字符。</p>
+<h4 id="输入样例"><a href="#输入样例" class="headerlink" title="输入样例:"></a>输入样例:</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">229</span><br></pre></td></tr></table></figure>
+
+<h4 id="输出样例"><a href="#输出样例" class="headerlink" title="输出样例:"></a>输出样例:</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">227   223   211   199   197   193   191   181   179   173</span><br></pre></td></tr></table></figure>
+
+<h3 id="Code-如下："><a href="#Code-如下：" class="headerlink" title="Code 如下： "></a><span style="color:#e53ecb;">Code 如下：</span> <br></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#include&lt;stdio.h&gt;</span></span><br><span class="line"><span class="comment">#include&lt;math.h&gt;</span></span><br><span class="line"></span><br><span class="line">int isprime(int a);</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    int n,count=0;</span><br><span class="line">    scanf(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(int i=n-1;n&gt;50&amp;&amp;n&lt;20000&amp;&amp;count&lt;10;i--)&#123;</span><br><span class="line">        <span class="keyword">if</span>(isprime(i))&#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%6d&quot;</span>,i);</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    <span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br><span class="line">int isprime(int a)</span><br><span class="line">&#123;</span><br><span class="line">    int i;</span><br><span class="line">    int re = 0;</span><br><span class="line">    <span class="keyword">if</span>(a==2) re = 1;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(!a%2) re = 0;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">for</span>(i=2;i&lt;=sqrt(a);i++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(a%i==0)&#123;</span><br><span class="line">                    re = 0;</span><br><span class="line">                    <span class="built_in">break</span>;</span><br><span class="line">                &#125;<span class="keyword">else</span> re = 1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">return</span> re;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<hr>
+<h4 id="学习记录，随时可能更改：如你有更好的建议请联系我"><a href="#学习记录，随时可能更改：如你有更好的建议请联系我" class="headerlink" title="学习记录，随时可能更改：如你有更好的建议请联系我"></a><span style="color:#e53ecb;">学习记录，随时可能更改</span>：<a href="mailto:854236339@qq.com">如你有更好的建议请联系我</a></h4>]]></content>
+      <categories>
+        <category>Learn</category>
+      </categories>
+      <tags>
+        <tag>code</tag>
+        <tag>C</tag>
+        <tag>PAT</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Next主题目录结构</title>
+    <url>/2020/11/16/Next%E4%B8%BB%E9%A2%98%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[<h3 id="默认目录结构"><a href="#默认目录结构" class="headerlink" title="默认目录结构"></a><span style="color:#e53ecb;">默认目录结构</span></h3><span style="color:#FF69B4;">
+
+<p>├── .deploy<br>├── public<br>├── scaffolds<br>├── scripts<br>├── source<br>|   ├── _drafts<br>|   └── _posts<br>├── themes<br>├── _config.yml<br>└── package.json</p>
+<a id="more"></a>
+
+</span>
+
+<span style="color:#48D1CC;">
+
+<p>deploy：执行hexo deploy命令部署到GitHub上的内容目录<br>public：执行hexo generate命令，输出的静态网页内容目录<br>scaffolds：layout模板文件目录，其中的md文件可以添加编辑<br>scripts：扩展脚本目录，这里可以自定义一些javascript脚本<br>source：文章源码目录，该目录下的markdown和html文件均会被hexo处理。该页面对应repo的根目录，404文件、favicon.ico文件，CNAME文件等都应该放这里，该目录下可新建页面目录。<br>drafts：草稿文章<br>posts：发布文章<br>themes：主题文件目录<br>_config.yml：全局配置文件，大多数的设置都在这里<br>package.json：应用程序数据，指明hexo的版本等信息，类似于一般软件中的关于按钮</p>
+</span>
+
+<h3 id="next主题"><a href="#next主题" class="headerlink" title="next主题 "></a><span style="color:#e53ecb;">next主题 </span></h3><span style="color:#00BFFF;">
+
+<p>├── .github            #git信息<br>├── languages          #多语言<br>|   ├── default.yml    #默认语言<br>|   └── zh-Hans.yml      #简体中文<br>|   └── zh-tw.yml      #繁体中文<br>├── layout             #布局，根目录下的*.ejs文件是对主页，分页，存档等的控制<br>|   ├── _custom        #可以自己修改的模板，覆盖原有模板<br>|   |   ├── _header.swig    #头部样式<br>|   |   ├── _sidebar.swig   #侧边栏样式<br>|   ├── _macro        #可以自己修改的模板，覆盖原有模板<br>|   |   ├── post.swig    #文章模板<br>|   |   ├── reward.swig    #打赏模板<br>|   |   ├── sidebar.swig   #侧边栏模板<br>|   ├── _partial       #局部的布局<br>|   |   ├── head       #头部模板<br>|   |   ├── search     #搜索模板<br>|   |   ├── share      #分享模板<br>|   ├── _script        #局部的布局<br>|   ├── _third-party   #第三方模板<br>|   ├── _layout.swig   #主页面模板<br>|   ├── index.swig     #主页面模板<br>|   ├── page           #页面模板<br>|   └── tag.swig       #tag模板<br>├── scripts            #script源码<br>|   ├── tags           #tags的script源码<br>|   ├── marge.js       #页面模板<br>├── source             #源码<br>|   ├── css            #css源码<br>|   |   ├── _common    #<em>.styl基础css<br>|   |   ├── _custom    #</em>.styl局部css<br>|   |   └── _mixins    #mixins的css<br>|   ├── fonts          #字体<br>|   ├── images         #图片<br>|   ├── uploads        #添加的文件<br>|   └── js             #javascript源代码<br>├── _config.yml        #主题配置文件<br>└── README.md          #用GitHub的都知道<br></span></p>
+<hr>
+]]></content>
+      <categories>
+        <category>Blog</category>
+      </categories>
+      <tags>
+        <tag>next</tag>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PAT 数字金字塔</title>
+    <url>/2020/11/17/PAT-%E6%95%B0%E5%AD%97%E9%87%91%E5%AD%97%E5%A1%94/</url>
+    <content><![CDATA[<h3 id="输入正整数n，输出n层数字金字塔。"><a href="#输入正整数n，输出n层数字金字塔。" class="headerlink" title="输入正整数n，输出n层数字金字塔。"></a>输入正整数n，输出n层数字金字塔。</h3><h4 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式:"></a>输入格式:</h4><p>正整数n，1&lt;=n&lt;=9。</p>
+<a id="more"></a>
+
+<h4 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式:"></a>输出格式:</h4><p>n层的金字塔，其中第1层的“1”在第1行的第39列（列从1开始计数）。</p>
+<h4 id="输入样例"><a href="#输入样例" class="headerlink" title="输入样例:"></a>输入样例:</h4><p><code>5</code></p>
+<h4 id="输出样例"><a href="#输出样例" class="headerlink" title="输出样例:"></a>输出样例:</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">                                      1</span><br><span class="line">                                     121</span><br><span class="line">                                    12321</span><br><span class="line">                                   1234321</span><br><span class="line">                                  123454321</span><br><span class="line">```                                </span><br><span class="line"></span><br><span class="line"><span class="comment">### &lt;span style=&quot;color:#e53ecb;&quot;&gt;Code 如下：&lt;/span&gt; &lt;br&gt;</span></span><br><span class="line">```bash</span><br><span class="line"><span class="comment">#include&lt;stdio.h&gt;</span></span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    int n;</span><br><span class="line">    scanf(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">    <span class="keyword">if</span>(n&gt;=1&amp;&amp;n&lt;=9)&#123;</span><br><span class="line">        <span class="keyword">for</span>(int i=1;i&lt;=n;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(int j=0;j&lt;39-i;j++)&#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot; &quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span>(int k=1;k&lt;=i;k++)&#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,k);</span><br><span class="line">                <span class="keyword">if</span>(k==i&amp;&amp;i!=1)&#123;</span><br><span class="line">                    <span class="keyword">for</span>(int o=k-1;o&gt;0;o--)&#123;</span><br><span class="line">                    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,o);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h4 id="学习记录，随时可能更改：如你有更好的建议请联系我"><a href="#学习记录，随时可能更改：如你有更好的建议请联系我" class="headerlink" title="学习记录，随时可能更改：如你有更好的建议请联系我"></a><span style="color:#e53ecb;">学习记录，随时可能更改</span>：<a href="mailto:854236339@qq.com">如你有更好的建议请联系我</a></h4>]]></content>
+      <categories>
+        <category>Learn</category>
+      </categories>
+      <tags>
+        <tag>code</tag>
+        <tag>C</tag>
+        <tag>PAT</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PAT 倒顺数字串</title>
+    <url>/2020/11/17/PAT-%E5%80%92%E9%A1%BA%E6%95%B0%E5%AD%97%E4%B8%B2/</url>
+    <content><![CDATA[<h3 id="输入正整数n，输出它的倒顺数字串。如n-6时，输出"><a href="#输入正整数n，输出它的倒顺数字串。如n-6时，输出" class="headerlink" title="输入正整数n，输出它的倒顺数字串。如n=6时，输出"></a>输入正整数n，输出它的倒顺数字串。如n=6时，输出</h3><p><code>1 2 3 4 5 6 5 4 3 2 1</code></p>
+<a id="more"></a>
+
+<h4 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式:"></a>输入格式:</h4><p>输入一个正整数n，n的范围是[1,50]。</p>
+<h4 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式:"></a>输出格式:</h4><p>n的倒顺数字串，每两个数字之间只用一个空格隔开。</p>
+<h4 id="输入样例"><a href="#输入样例" class="headerlink" title="输入样例:"></a>输入样例:</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">6</span><br></pre></td></tr></table></figure>
+
+<h4 id="输出样例"><a href="#输出样例" class="headerlink" title="输出样例:"></a>输出样例:</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1 2 3 4 5 6 5 4 3 2 1</span><br></pre></td></tr></table></figure>
+
+<h3 id="Code-如下："><a href="#Code-如下：" class="headerlink" title="Code 如下： "></a><span style="color:#e53ecb;">Code 如下：</span> <br></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#include&lt;stdio.h&gt;</span></span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    int n;</span><br><span class="line">    scanf(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">    <span class="keyword">if</span>(n&gt;1&amp;&amp;n&lt;=50)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">        <span class="keyword">for</span>(int i=2;i&lt;n;i++)&#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot; %d&quot;</span>,i);</span><br><span class="line">        &#125;<span class="keyword">for</span>(int j=n;j&gt;=1;j--)&#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot; %d&quot;</span>,j);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> (n==1) <span class="built_in">printf</span>(<span class="string">&quot;1\n&quot;</span>);</span><br><span class="line">    <span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<hr>
+<h4 id="学习记录，随时可能更改：如你有更好的建议请联系我"><a href="#学习记录，随时可能更改：如你有更好的建议请联系我" class="headerlink" title="学习记录，随时可能更改：如你有更好的建议请联系我"></a><span style="color:#e53ecb;">学习记录，随时可能更改</span>：<a href="mailto:854236339@qq.com">如你有更好的建议请联系我</a></h4>]]></content>
+      <categories>
+        <category>Learn</category>
+      </categories>
+      <tags>
+        <tag>code</tag>
+        <tag>C</tag>
+        <tag>PAT</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PAT 穷举问题-搬砖</title>
+    <url>/2020/11/17/PAT%E7%A9%B7%E4%B8%BE%E9%97%AE%E9%A2%98-%E6%90%AC%E7%A0%96/</url>
+    <content><![CDATA[<h3 id="某工地需要搬运砖块，已知男人一人搬-3-块，女人一人搬-2-块，小孩两人搬-1-块。如果想用-n-人正好搬-n-块砖，问有多少种搬法？"><a href="#某工地需要搬运砖块，已知男人一人搬-3-块，女人一人搬-2-块，小孩两人搬-1-块。如果想用-n-人正好搬-n-块砖，问有多少种搬法？" class="headerlink" title="某工地需要搬运砖块，已知男人一人搬 3 块，女人一人搬 2 块，小孩两人搬 1 块。如果想用 n 人正好搬 n 块砖，问有多少种搬法？"></a>某工地需要搬运砖块，已知男人一人搬<span style="color:#e53ecb;"> 3 </span>块，女人一人搬<span style="color:#e53ecb;"> 2 </span>块，小孩两人搬<span style="color:#e53ecb;"> 1 </span>块。如果想用<span style="color:#e53ecb;"> n </span>人正好搬<span style="color:#e53ecb;"> n </span>块砖，问有多少种搬法？</h3><a id="more"></a>
+<h4 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式:"></a>输入格式:</h4><p>输入在一行中给出一个正整数n。</p>
+<h4 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式:"></a>输出格式:</h4><p>输出在每一行显示一种方案，按照”men = cnt_m, women = cnt_w, child = cnt_c”的格式，输出男人的数量cnt_m，女人的数量cnt_w，小孩的数量cnt_c。请注意，等号的两侧各有一个空格，逗号的后面也有一个空格。</p>
+<p>如果找不到符合条件的方案，则输出”<code>None</code>“</p>
+<h4 id="输入样例"><a href="#输入样例" class="headerlink" title="输入样例:"></a>输入样例:</h4><p><code>45</code></p>
+<h4 id="输出样例"><a href="#输出样例" class="headerlink" title="输出样例:"></a>输出样例:</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">men = 0, women = 15, child = 30</span><br><span class="line">men = 3, women = 10, child = 32</span><br><span class="line">men = 6, women = 5, child = 34</span><br><span class="line">men = 9, women = 0, child = 36</span><br></pre></td></tr></table></figure>
+
+<h3 id="Code-如下："><a href="#Code-如下：" class="headerlink" title="Code 如下： "></a><span style="color:#e53ecb;">Code 如下：</span> <br></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#include&lt;stdio.h&gt;</span></span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    int man=3,woman=2;</span><br><span class="line">    double child=0.5;</span><br><span class="line">    int sum,nofind=0;</span><br><span class="line">    scanf(<span class="string">&quot;%d&quot;</span>,&amp;sum);</span><br><span class="line">    </span><br><span class="line">    int m,w,c;</span><br><span class="line">    <span class="keyword">for</span>(m=0;m&lt;sum/man+3;m++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(w=0;w&lt;sum/woman+4;w++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(c=0;c&lt;sum/child+6;c++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(m*3+w*2+c*0.5 == sum &amp;&amp; m+w+c == sum &amp;&amp; woman%2 == 0 &amp;&amp; man%3 == 0)&#123;</span><br><span class="line">                    <span class="built_in">printf</span>(<span class="string">&quot;men = %d, women = %d, child = %d\n&quot;</span>,m,w,c);</span><br><span class="line">                    nofind=1;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">if</span>(!nofind) <span class="built_in">printf</span>(<span class="string">&quot;None\n&quot;</span>);</span><br><span class="line">    <span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h4 id="学习记录，随时可能更改：如你有更好的建议请联系我"><a href="#学习记录，随时可能更改：如你有更好的建议请联系我" class="headerlink" title="学习记录，随时可能更改：如你有更好的建议请联系我"></a><span style="color:#e53ecb;">学习记录，随时可能更改</span>：<a href="mailto:854236339@qq.com">如你有更好的建议请联系我</a></h4>]]></content>
+      <categories>
+        <category>Learn</category>
+      </categories>
+      <tags>
+        <tag>code</tag>
+        <tag>C</tag>
+        <tag>PAT</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/11/15/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a><span style="color:#00BFFF;">Quick Start</span></h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><a id="more"></a>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy </span><br></pre></td></tr></table></figure>
+
+
+<hr>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+      <categories>
+        <category>Blog</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>blog</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo安装next主题不常见的错误解决</title>
+    <url>/2020/11/16/hexo%E4%B8%BB%E9%A2%98next%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<h2 id="问题一"><a href="#问题一" class="headerlink" title="    问题一    "></a><span style="color:#e53ecb;">    问题一    </span></h2><h3 id="进网站http-localhost-4000-一堆代码，不能正常显示"><a href="#进网站http-localhost-4000-一堆代码，不能正常显示" class="headerlink" title="进网站http://localhost:4000 一堆代码，不能正常显示"></a>进网站<code>http://localhost:4000</code> 一堆代码，不能正常显示</h3><h3 id="原因是hexo在5-0之后把swig给删除了需要自己手动安装"><a href="#原因是hexo在5-0之后把swig给删除了需要自己手动安装" class="headerlink" title="原因是hexo在5.0之后把swig给删除了需要自己手动安装"></a>原因是hexo在5.0之后把swig给删除了需要自己手动安装</h3><a id="more"></a>
+
+<h3 id="安装命令如下"><a href="#安装命令如下" class="headerlink" title="安装命令如下"></a><span style="color:#e53ecb;">安装命令如下</span></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm i hexo-renderer-swig</span><br></pre></td></tr></table></figure>
+
+<h2 id="问题二"><a href="#问题二" class="headerlink" title="    问题二    "></a><span style="color:#e53ecb;">    问题二    </span></h2><h3 id="显示-err-Error-Cannot-find-module-39-gulp-39"><a href="#显示-err-Error-Cannot-find-module-39-gulp-39" class="headerlink" title="显示 err: Error: Cannot find module &#39;gulp&#39;"></a>显示 <code>err: Error: Cannot find module &#39;gulp&#39;</code></h3><h3 id="这个时候就是你的依赖不完整看提示安装所有依赖"><a href="#这个时候就是你的依赖不完整看提示安装所有依赖" class="headerlink" title="这个时候就是你的依赖不完整看提示安装所有依赖"></a>这个时候就是你的依赖不完整看提示安装所有依赖</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install gulp</span><br></pre></td></tr></table></figure>
+<h3 id="补齐依赖后如还有这种类似的，请重复上面步骤gulp换成你报错的名字"><a href="#补齐依赖后如还有这种类似的，请重复上面步骤gulp换成你报错的名字" class="headerlink" title="补齐依赖后如还有这种类似的，请重复上面步骤gulp换成你报错的名字"></a>补齐依赖后如还有这种类似的，请重复上面步骤<code>gulp</code>换成你报错的名字</h3><h2 id="问题三"><a href="#问题三" class="headerlink" title="    问题三    "></a><span style="color:#e53ecb;">    问题三    </span></h2><h3 id="NexT主题分页的翻页箭头显示-lt-i-class-quot-fa-fa-angle-right-quot-gt-lt-i-gt"><a href="#NexT主题分页的翻页箭头显示-lt-i-class-quot-fa-fa-angle-right-quot-gt-lt-i-gt" class="headerlink" title="NexT主题分页的翻页箭头显示&lt;i class=&quot;fa fa-angle-right&quot;&gt;&lt;/i&gt; "></a>NexT主题分页的翻页箭头显示<code>&lt;i class=&quot;fa fa-angle-right&quot;&gt;&lt;/i&gt; </code></h3><h4 id="修改代码的位置-themes-next-layout-partials-pagination-swig"><a href="#修改代码的位置-themes-next-layout-partials-pagination-swig" class="headerlink" title="修改代码的位置: themes\next\layout\_partials\pagination.swig"></a>修改代码的位置: <code>themes\next\layout\_partials\pagination.swig</code></h4><h4 id="原来为"><a href="#原来为" class="headerlink" title="原来为:"></a>原来为:</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&#123;% <span class="keyword">if</span> page.prev or page.next %&#125;</span><br><span class="line">  &lt;nav class=<span class="string">&quot;pagination&quot;</span>&gt;</span><br><span class="line">    &#123;&#123;</span><br><span class="line">      paginator(&#123;</span><br><span class="line">        prev_text: <span class="string">&#x27;&lt;i class=&quot;fa fa-angle-left&quot;&gt;&lt;/i&gt;&#x27;</span>,</span><br><span class="line">        next_text: <span class="string">&#x27;&lt;i class=&quot;fa fa-angle-right&quot;&gt;&lt;/i&gt;&#x27;</span>,</span><br><span class="line">        mid_size: 1</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;&#125;</span><br><span class="line">  &lt;/nav&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="修改为："><a href="#修改为：" class="headerlink" title="修改为："></a>修改为：</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&#123;% <span class="keyword">if</span> page.prev or page.next %&#125;</span><br><span class="line">  &lt;nav class=<span class="string">&quot;pagination&quot;</span>&gt;</span><br><span class="line">    &#123;&#123;</span><br><span class="line">      paginator(&#123;</span><br><span class="line">        prev_text: <span class="string">&#x27;&lt;&#x27;</span>,</span><br><span class="line">        next_text: <span class="string">&#x27;&gt;&#x27;</span>,</span><br><span class="line">        mid_size: 1</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;&#125;</span><br><span class="line">  &lt;/nav&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="问题四"><a href="#问题四" class="headerlink" title="    问题四    "></a><span style="color:#e53ecb;">    问题四    </span></h2><pre><code>1</code></pre>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ Cannot find module XXX</span><br></pre></td></tr></table></figure>
+<h3 id="NexT-提供的标签插件引用了-Hexo-模块中的一些子模块，例如hexo-util-NPM-在版本-3-中引入了新的模块安装机制，-NexT-将使用这种机制，意味着如果是旧的-NPM-将会碰到这个错误。-因此，如果您碰到-“Cannot-find-module-XXX”-的错误时，请首先使用"><a href="#NexT-提供的标签插件引用了-Hexo-模块中的一些子模块，例如hexo-util-NPM-在版本-3-中引入了新的模块安装机制，-NexT-将使用这种机制，意味着如果是旧的-NPM-将会碰到这个错误。-因此，如果您碰到-“Cannot-find-module-XXX”-的错误时，请首先使用" class="headerlink" title="NexT 提供的标签插件引用了 Hexo 模块中的一些子模块，例如hexo-util NPM 在版本 3 中引入了新的模块安装机制， NexT 将使用这种机制，意味着如果是旧的 NPM 将会碰到这个错误。 因此，如果您碰到 “Cannot find module XXX” 的错误时，请首先使用"></a>NexT 提供的标签插件引用了 Hexo 模块中的一些子模块，例如<code>hexo-util</code> NPM 在版本 3 中引入了新的模块安装机制， NexT 将使用这种机制，意味着如果是旧的 NPM 将会碰到这个错误。 因此，如果您碰到 “Cannot find module XXX” 的错误时，请首先使用</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm -v</span><br></pre></td></tr></table></figure>
+<h3 id="2-确认您的-NPM-版本。"><a href="#2-确认您的-NPM-版本。" class="headerlink" title="2 确认您的 NPM 版本。"></a>2 确认您的 NPM 版本。</h3><h4 id="版本-gt-3-依然报错：-请先删除-node-module-目录，然后使用-npm-install-重新安装一下模块。"><a href="#版本-gt-3-依然报错：-请先删除-node-module-目录，然后使用-npm-install-重新安装一下模块。" class="headerlink" title="版本 &gt; 3 依然报错： 请先删除 node_module 目录，然后使用 npm install 重新安装一下模块。"></a>版本 &gt; 3 依然报错： 请先删除 node_module 目录，然后使用 npm install 重新安装一下模块。</h4><h4 id="版本-lt-3：-您可以选择升级您的-NPM；-或者在站点目录下明确指定模块依赖"><a href="#版本-lt-3：-您可以选择升级您的-NPM；-或者在站点目录下明确指定模块依赖" class="headerlink" title="版本 &lt; 3： 您可以选择升级您的 NPM； 或者在站点目录下明确指定模块依赖"></a>版本 &lt; 3： 您可以选择升级您的 NPM； 或者在站点目录下明确指定模块依赖</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install --save hexo-util</span><br></pre></td></tr></table></figure>
+<h4 id="其中-hexo-util仅是示例，请替换成错误中提示的模块名称。"><a href="#其中-hexo-util仅是示例，请替换成错误中提示的模块名称。" class="headerlink" title="其中 hexo-util仅是示例，请替换成错误中提示的模块名称。"></a>其中 <code>hexo-util</code>仅是示例，请替换成错误中提示的模块名称。</h4><hr>
+<h4 id="如以上未能解决-可以选择：-联系我或查看官方文档"><a href="#如以上未能解决-可以选择：-联系我或查看官方文档" class="headerlink" title="如以上未能解决,可以选择： 联系我或查看官方文档"></a><span style="color:#e53ecb;">如以上未能解决,可以选择：</span><a href="mailto:854236339@qq.com"> 联系我</a><span style="color:#e53ecb;">或</span><a href="http://theme-next.iissnan.com/faqs.html#module-not-found">查看官方文档</a></h4>]]></content>
+      <categories>
+        <category>Blog</category>
+      </categories>
+      <tags>
+        <tag>next</tag>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mac下root用户显示sorry解决方案</title>
+    <url>/2020/11/16/mac%E4%B8%8Broot%E7%94%A8%E6%88%B7%E6%98%BE%E7%A4%BAsorry%E8%A7%A3%E5%86%B3/</url>
+    <content><![CDATA[<h3 id="显示如下"><a href="#显示如下" class="headerlink" title="        显示如下"></a><span style="color:#e53ecb;">        显示如下</span></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ su：sorry！</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="请尝试以下方法"><a href="#请尝试以下方法" class="headerlink" title="        请尝试以下方法"></a><span style="color:#e53ecb;">        请尝试以下方法</span></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo su</span><br><span class="line">$ passwd </span><br><span class="line">$ Changing password <span class="keyword">for</span> root.</span><br><span class="line">$ New password: 键入新的密码				密码并不会显示直接键入就可以</span><br><span class="line">$ Retype new password:再次键入新的密码</span><br></pre></td></tr></table></figure>
+
+
+<hr>
+<h4 id="如果不能解决：请联系我"><a href="#如果不能解决：请联系我" class="headerlink" title="如果不能解决：请联系我"></a><span style="color:#e53ecb;">如果不能解决</span>：<a href="mailto:854236339@qq.com">请联系我</a></h4>]]></content>
+      <categories>
+        <category>Mac os</category>
+      </categories>
+      <tags>
+        <tag>root</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何搭建自己的博客框架，基于MACOS，其它平台可作为参考</title>
+    <url>/2020/11/16/%E5%88%A9%E7%94%A8hexo%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2Blog/</url>
+    <content><![CDATA[<h3 id="下载搭建博客所需的工具-node"><a href="#下载搭建博客所需的工具-node" class="headerlink" title="下载搭建博客所需的工具 node"></a>下载搭建博客所需的工具 <code>node</code></h3><p>Ddownload :  <code>node</code><a href="https://nodejs.org/">点击下载</a></p>
+<p>Download for macos(X64)  14.xx.x LFS 并安装，安装选择-继续；</p>
+<h3 id="打开终端-切换root用户"><a href="#打开终端-切换root用户" class="headerlink" title="打开终端  切换root用户"></a>打开终端  切换<code>root</code>用户</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ su									//切换root用户</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="如过出现"><a href="#如过出现" class="headerlink" title="如过出现"></a>如过出现</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ su：sorry！</span><br></pre></td></tr></table></figure>
+<h2 id="参考-macos切换root用户"><a href="#参考-macos切换root用户" class="headerlink" title="参考: macos切换root用户"></a>参考: <a href="https://hexo.io/docs/server.html">macos切换root用户</a></h2><h3 id="正常会出现以下字样"><a href="#正常会出现以下字样" class="headerlink" title="正常会出现以下字样"></a>正常会出现以下字样</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sh-3.2<span class="comment"># 									</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ node -v					查看当前node版本</span><br><span class="line">$ npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br><span class="line">$ cnpm -v					查看当前cnpm版本</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cnpm install  -g hexo-cli</span><br><span class="line">等待自动安装后</span><br><span class="line">$ hexo -v					查看当前hexo版本</span><br></pre></td></tr></table></figure>
+
+<h2 id="自己选择一个目录创建一个存放-博客内容-的文件"><a href="#自己选择一个目录创建一个存放-博客内容-的文件" class="headerlink" title="自己选择一个目录创建一个存放 博客内容 的文件"></a>自己选择一个目录创建一个存放 博客内容 的文件</h2><h2 id="如我创建在桌面"><a href="#如我创建在桌面" class="headerlink" title="如我创建在桌面"></a>如我创建在桌面</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ mkdir Desktop/blog </span><br></pre></td></tr></table></figure>
+<h2 id="进入到你所创建的文件夹里面"><a href="#进入到你所创建的文件夹里面" class="headerlink" title="进入到你所创建的文件夹里面"></a>进入到你所创建的文件夹里面</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> Desktop/blog 				进入到这个目录</span><br><span class="line">$ sudo hexo init				初始化一个博客 </span><br><span class="line">$ ls -l							查看是否创建了这个博客的文件</span><br><span class="line">$ hexo s						启动博客看一下效果</span><br><span class="line">访问：http://localhost:4000      关闭就键入： Ctrl+c</span><br></pre></td></tr></table></figure>
+<h3 id="试着创建你自己写的第一篇博客吧"><a href="#试着创建你自己写的第一篇博客吧" class="headerlink" title="试着创建你自己写的第一篇博客吧"></a>试着创建你自己写的第一篇博客吧</h3><p>$ hexo n “我的第一篇博客”<br>查看你创建的博客文件地址并且进入这个文件<br>$ cd source/_posts/<br>$ ls                            查看这个目录下是否有这个文件<br>$ vi 我的第一篇博客.md<br>$ i                             进行编辑<br>编辑完成后按一下ESC随后键入：wq</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ../..						返回到之前创建文件夹</span><br><span class="line">$ hexo clean 					清理</span><br><span class="line">$ hexo g						重建</span><br><span class="line">$ hexo s						启动博客看一下效果</span><br></pre></td></tr></table></figure>
+<p>访问：<code>http://localhost:4000</code><br>关闭就键入：<code>Ctrl+c</code></p>
+<hr>
+<p>##参考文献: <a href="https://codesleep.cn/">Codesleep</a><br>#本篇是看了  <a href="https://codesleep.cn/">Codesleep</a> 视频总结的。</p>
+]]></content>
+      <categories>
+        <category>Blog</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>把你的博客部署到github上</title>
+    <url>/2020/11/16/%E6%8A%8ABlog%E9%83%A8%E7%BD%B2%E5%88%B0github%E4%B8%8A/</url>
+    <content><![CDATA[<h3 id="在github上创建一个新仓库随后打开终端"><a href="#在github上创建一个新仓库随后打开终端" class="headerlink" title="        在github上创建一个新仓库随后打开终端"></a><span style="color:#e53ecb;">        在github上创建一个新仓库随后打开终端</span></h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h3 id="随后进入到博客文件夹到目录里"><a href="#随后进入到博客文件夹到目录里" class="headerlink" title="随后进入到博客文件夹到目录里"></a>随后进入到博客文件夹到目录里</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ vi _config.yml </span><br></pre></td></tr></table></figure>
+
+<h3 id="一直下滑到最后修改-按一下"><a href="#一直下滑到最后修改-按一下" class="headerlink" title="一直下滑到最后修改 按一下"></a>一直下滑到最后修改 按一下</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">i</span><br></pre></td></tr></table></figure>
+
+<h3 id="看到左下角变成insetr就可以修改了"><a href="#看到左下角变成insetr就可以修改了" class="headerlink" title="看到左下角变成insetr就可以修改了"></a>看到左下角变成insetr就可以修改了</h3><p>  type: git<br>  repo: 这个地方放你创建的仓库的链接<br>  branch: master</p>
+<h3 id="随后按一下ESC-看到insetr消失"><a href="#随后按一下ESC-看到insetr消失" class="headerlink" title="随后按一下ESC 看到insetr消失"></a>随后按一下ESC 看到insetr消失</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">:wq</span><br></pre></td></tr></table></figure>
+<h3 id="保存并退出就OK了"><a href="#保存并退出就OK了" class="headerlink" title="保存并退出就OK了"></a>保存并退出就OK了</h3><h3 id="随后就输入命令把项目部署到github上"><a href="#随后就输入命令把项目部署到github上" class="headerlink" title="随后就输入命令把项目部署到github上"></a>随后就输入命令把项目部署到github上</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+<h3 id="会提示你输入用户名-然后输入密码就OK了。访问你创建仓库时候的域名就OK了。"><a href="#会提示你输入用户名-然后输入密码就OK了。访问你创建仓库时候的域名就OK了。" class="headerlink" title="会提示你输入用户名 然后输入密码就OK了。访问你创建仓库时候的域名就OK了。"></a>会提示你输入用户名 然后输入密码就OK了。访问你创建仓库时候的域名就OK了。<br></h3><hr>
+<p>####参考文献：<a href="https://codesheep.cn/">CodeSheep</a><br>####该篇是：<a href="https://codesheep.cn/">CodeSheep</a> 视频后的总结</p>
+]]></content>
+      <categories>
+        <category>Blog</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>git</tag>
+      </tags>
+  </entry>
+</search>
